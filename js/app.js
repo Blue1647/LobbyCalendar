@@ -3,7 +3,7 @@ var SCOPES = ["https://www.googlepis.com/auth/calendar.readonly"];
 
 console.log("app.js loaded!");
 
-function checkAuth () {
+function checkAuth() {
 	gapi.auth.authorize(
 	{
 		'client_id': CLIENT_ID,
@@ -12,7 +12,7 @@ function checkAuth () {
 
 	}, handleAuthResult);
 }
-function handleAuthResult (authResult) {
+function handleAuthResult(authResult) {
 	var authorizeDiv = document.getElementById('authorize-div');
 	if (authResult && !authResult.error) {
 		authorizeDiv.style.display = 'none';
@@ -22,13 +22,13 @@ function handleAuthResult (authResult) {
 		authorizeDiv.style.display = 'inline';		
 	}
 }
-function handleAuthClick (event) {
+function handleAuthClick(event) {
 	gapi.auth.authorize(
 	{client_id: CLIENT_ID, scope: SCOPES, immediate: false},
 	handleAuthResult);
 	return false;
 }
-function loadCalendarApi () {
+function loadCalendarApi() {
 	gapi.client.load('calendar', 'v3', listUpcomingEvents);
 }
 function listUpcomingEvents () {
@@ -40,17 +40,18 @@ function listUpcomingEvents () {
 		'maxResults': 10,
 		'orderBy': 'startTime'
 	});
-	request.execute(function (resp){
+	request.execute(function (resp) {
 		var events = resp.items;
 		appendPre('Upcoming events:');
 
-		if (events.length > 0){
+		if (events.length > 0) {
 			for (var i = 0; i <events.length; i++) {
 				var event = events[i];
 				var when = event.start.date;
 				if(!when){
 					when = event.start.date;
-				}else {
+				}
+                else{
 				appendPre('No upcoming events found');
 			}
 				appendPre(event.summary + when)
