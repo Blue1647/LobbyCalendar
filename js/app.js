@@ -1,5 +1,5 @@
 var CLIENT_ID = '739379389102-e2e5g2i4pjbc48icc9h98q2n9lcr33ai.apps.googleusercontent.com';
-var SCOPES = ["https://www.googlepis.com/auth/calendar.readonly"];
+var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
 
 console.log("app.js loaded!");
 
@@ -54,7 +54,8 @@ function listUpcomingEvents () {
                 else{
 				appendPre('No upcoming events found');
 			}
-				appendPre(event.summary + when)
+				appendPre(event.summary + event.start);
+
 
 
 			}
