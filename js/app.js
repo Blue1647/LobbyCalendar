@@ -49,8 +49,11 @@ function listUpcomingEvents () {
 				var event = events[i];
 				var when = event.start.date;
                 var start = (new Date(event.start.dateTime).getDate());
-                var end = (new Date(event.start.dateTime).getDate());
+                var end = (new Date(event.end.dateTime).getDate());
                 var todayDate = new Date().getDate();
+                var tomDate = todayDate + 1;
+                console.log(typeof start)
+                console.log(typeof todayDate);
 				if(!when){
 					when = event.start.date;
 				}
@@ -58,17 +61,20 @@ function listUpcomingEvents () {
 				today('No upcoming events found');
 			}*/
 				//appendPre(event.summary, new Date(event.start.dateTime) + " - " + event.end.dateTime);
-
-                else if(todayDate == start){
-                    today(event.summary);
-                    console.log(event.summary);
+                else if(start === todayDate){
+                    today(event.summary, start);
                 }
+                else if (start === tomDate){
+                    today(event.summary, start);
+                }
+                console.log(start);
+                console.log(tomDate);
 
-                console.log(new Date(event.start.dateTime).getDate());
 			}
 	};
 })
-console.log("Today = " + new Date().getDate());
+console.log("Today = " + new Date().getDate().toString());
+console.log(typeof new Date().getDate());
 function today(title, date) {
     var pre = document.getElementById('todayOutput');
     var titleContent = document.createTextNode(title + '\n');
