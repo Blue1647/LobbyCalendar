@@ -37,37 +37,62 @@ function listUpcomingEvents () {
 		'timeMin': (new Date()).toISOString(),
 		'showDeleted': false,
 		'singleEvents': true,
-		'maxResults': 20,
+		'maxResults': 10,
 		'orderBy': 'startTime'
 	});
 	request.execute(function (resp) {
 		var events = resp.items;
-		appendPre('Upcoming events:');
+		//today('Upcoming events:');
 
 		if (events.length > 0) {
 			for (var i = 0; i <events.length; i++) {
 				var event = events[i];
 				var when = event.start.date;
+                var start = (new Date(event.start.dateTime).getDate());
+                var end = (new Date(event.start.dateTime).getDate());
+                var todayDate = new Date().getDate();
 				if(!when){
 					when = event.start.date;
 				}
-                else{
-				appendPre('No upcoming events found');
-			}
-				appendPre(event.summary, new Date(event.start.dateTime) + " - " + event.end.dateTime);
+                /*else{
+				today('No upcoming events found');
+			}*/
+				//appendPre(event.summary, new Date(event.start.dateTime) + " - " + event.end.dateTime);
 
-                console.log(new Date(event.start.dateTime));
+                else if(todayDate == start){
+                    today(event.summary);
+                    console.log(event.summary);
+                }
+
+                console.log(new Date(event.start.dateTime).getDate());
 			}
 	};
 })
-
-function appendPre(title, date) {
-        var pre = document.getElementById('output');
-        var titleContent = document.createTextNode(title + '\n');
-        var dateContent = document.createTextNode(date + '\n');
-        var br = document.createElement("br");
-        var b = document.createElement("b");
-        pre.appendChild(br);
-        pre.appendChild(b.innerHTML = titleContent);
-        pre.appendChild(dateContent);
+console.log("Today = " + new Date().getDate());
+function today(title, date) {
+    var pre = document.getElementById('todayOutput');
+    var titleContent = document.createTextNode(title + '\n');
+    var dateContent = document.createTextNode(date + '\n');
+    var br = document.createElement("br");
+    pre.appendChild(br);
+    pre.appendChild(titleContent);
+    pre.appendChild(dateContent);
+}
+function tomorrow(title, date){
+    var pre = document.getElementById('tomOutput');
+    var titleContent = document.createTextNode(title + '\n');
+    var dateContent = document.createTextNode(date + '\n');
+    var br = document.createElement("br");
+    pre.appendChild(br);
+    pre.appendChild(titleContent);
+    pre.appendChild(dateContent);
+}
+function nextDay(title,date){
+    var pre = document.getElementById('nextDayOutput');
+    var titleContent = document.createTextNode(title + '\n');
+    var dateContent = document.createTextNode(date + '\n');
+    var br = document.createElement("br");
+    pre.appendChild(br);
+    pre.appendChild(titleContent);
+    pre.appendChild(dateContent);
 }}
