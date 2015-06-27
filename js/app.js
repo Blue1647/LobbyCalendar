@@ -54,19 +54,17 @@ function listUpcomingEvents () {
                 else{
 				appendPre('No upcoming events found');
 			}
-				appendPre("\n " + event.summary + new Date(event.start.dateTime) + " - " + event.end.dateTime);
+				appendPre(event.summary + new Date(event.start.dateTime) + " - " + event.end.dateTime);
+
                 console.log(new Date(event.start.dateTime));
-
-
-
 			}
-			
-		
 	};
 })
 
 function appendPre(message) {
         var pre = document.getElementById('output');
         var textContent = document.createTextNode(message + '\n');
+        var br = document.createElement("br");
+        pre.appendChild(br);
         pre.appendChild(textContent);
 }}
