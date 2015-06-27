@@ -54,17 +54,20 @@ function listUpcomingEvents () {
                 else{
 				appendPre('No upcoming events found');
 			}
-				appendPre(event.summary + new Date(event.start.dateTime) + " - " + event.end.dateTime);
+				appendPre(event.summary, new Date(event.start.dateTime) + " - " + event.end.dateTime);
 
                 console.log(new Date(event.start.dateTime));
 			}
 	};
 })
 
-function appendPre(message) {
+function appendPre(title, date) {
         var pre = document.getElementById('output');
-        var textContent = document.createTextNode(message + '\n');
+        var titleContent = document.createTextNode(title + '\n');
+        var dateContent = document.createTextNode(date + '\n');
         var br = document.createElement("br");
+        var b = document.createElement("b");
         pre.appendChild(br);
-        pre.appendChild(textContent);
+        pre.appendChild(b.innerHTML = titleContent);
+        pre.appendChild(dateContent);
 }}
