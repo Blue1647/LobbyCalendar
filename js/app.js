@@ -37,7 +37,7 @@ function listUpcomingEvents () {
 		'timeMin': (new Date()).toISOString(),
 		'showDeleted': false,
 		'singleEvents': true,
-		'maxResults': 10,
+		'maxResults': 20,
 		'orderBy': 'startTime'
 	});
 	request.execute(function (resp) {
@@ -54,7 +54,8 @@ function listUpcomingEvents () {
                 else{
 				appendPre('No upcoming events found');
 			}
-				appendPre(event.summary + event.start);
+				appendPre("\n " + event.summary + new Date(event.start.dateTime) + " - " + event.end.dateTime);
+                console.log(new Date(event.start.dateTime));
 
 
 
