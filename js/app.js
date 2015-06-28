@@ -57,14 +57,12 @@ function listUpcomingEvents () {
 				if(!when){
 					when = event.start.date;
 				}
-                console.log(new Date(event.end.dateTime).toString('hh:mm tt'));
                 today(event.summary, startDate, startTime, endTime);
+                insertEventIntoTable(startDate, startTime, endTime, event.summary);
 
 			}
 	};
 })
-console.log("Today = " + new Date().getDate().toString());
-console.log(typeof new Date().getDate());
 function today(title, date, startTime, endTime) {
     var pre = document.getElementById('todayOutput');
     var titleNode = document.createTextNode(title + '\n');
@@ -72,34 +70,50 @@ function today(title, date, startTime, endTime) {
     var startTimeNode = document.createTextNode(startTime +'\n');
     var endTimeNode = document.createTextNode(endTime +'\n');
     var dash = document.createTextNode("- ");
+    var dash2 = document.createTextNode("-");
     var br = document.createElement("br");
     pre.appendChild(br);
     pre.appendChild(dateNode);
     pre.appendChild(br);
     pre.appendChild(startTimeNode);
-    pre.appendChild(dash);
-    pre.appendChild(endTimeNode);
     pre.appendChild(br);
     pre.appendChild(dash);
+    pre.appendChild(br);
+    pre.appendChild(endTimeNode);
+    pre.appendChild(br);
+    pre.appendChild(dash2);
+    pre.appendChild(br);
     pre.appendChild(br);
     pre.appendChild(titleNode);
     pre.appendChild(br);
 }
-function tomorrow(title, date){
-    var pre = document.getElementById('tomOutput');
-    var titleContent = document.createTextNode(title + '\n');
-    var dateContent = document.createTextNode(date + '\n');
-    var br = document.createElement("br");
-    pre.appendChild(br);
-    pre.appendChild(titleContent);
-    pre.appendChild(dateContent);
+function insertEventIntoTable(date, startTime, endTime, title) {
+    var table = document.getElementById('table-body');
+    var insertDate = date;
+    var insertTime = startTime + " - " + endTime;
+    var insertTitle = title;
+    var dateNode = document.createTextNode(insertDate);
+    var timeNode = document.createTextNode(insertTime);
+    var titleNode = document.createTextNode(insertTitle);
+    table.innerHTML = insertDate;
+    table.innerHTML = insertTitle
+
+
+
+
+
+    /*table.insertAdjacentHTML('beforeend', '<td>' + insertDate + '</td>');
+    table.insertAdjacentHTML('beforeend', '<td>' + insertTime + '</td>');
+    table.insertAdjacentHTML('beforeend', '<td>' + insertTitle + '</td>');*/
+
+
+    /*
+            <td id="column">Column content</td>
+            <td>Column content</td>
+            <td>Column content</td>*/
 }
-function nextDay(title,date){
-    var pre = document.getElementById('nextDayOutput');
-    var titleContent = document.createTextNode(title + '\n');
-    var dateContent = document.createTextNode(date + '\n');
-    var br = document.createElement("br");
-    pre.appendChild(br);
-    pre.appendChild(titleContent);
-    pre.appendChild(dateContent);
+function insertIntoTableRows(content){
+    var row = document.createElement("td");
+    row.innerHTML = content;
+    return row;
 }}
