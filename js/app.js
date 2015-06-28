@@ -48,41 +48,42 @@ function listUpcomingEvents () {
 			for (var i = 0; i <events.length; i++) {
 				var event = events[i];
 				var when = event.start.date;
-                var start = (new Date(event.start.dateTime).getDate());
-                var end = (new Date(event.end.dateTime).getDate());
+                var startDate = new Date(event.start.dateTime).toString('ddd MMMM/dd/yyyy');
+                var startTime = new Date(event.start.dateTime).toString('hh:mm tt');
+                var endDate = (new Date(event.end.dateTime).getDate());
+                var endTime = new Date(event.end.dateTime).toString('hh:mm tt');
                 var todayDate = new Date().getDate();
                 var tomDate = todayDate + 1;
-                console.log(typeof start)
-                console.log(typeof todayDate);
 				if(!when){
 					when = event.start.date;
 				}
-                /*else{
-				today('No upcoming events found');
-			}*/
-				//appendPre(event.summary, new Date(event.start.dateTime) + " - " + event.end.dateTime);
-                else if(start === todayDate){
-                    today(event.summary, start);
-                }
-                else if (start === tomDate){
-                    today(event.summary, start);
-                }
-                console.log(start);
-                console.log(tomDate);
+                console.log(new Date(event.end.dateTime).toString('hh:mm tt'));
+                today(event.summary, startDate, startTime, endTime);
 
 			}
 	};
 })
 console.log("Today = " + new Date().getDate().toString());
 console.log(typeof new Date().getDate());
-function today(title, date) {
+function today(title, date, startTime, endTime) {
     var pre = document.getElementById('todayOutput');
-    var titleContent = document.createTextNode(title + '\n');
-    var dateContent = document.createTextNode(date + '\n');
+    var titleNode = document.createTextNode(title + '\n');
+    var dateNode = document.createTextNode(date + '\n');
+    var startTimeNode = document.createTextNode(startTime +'\n');
+    var endTimeNode = document.createTextNode(endTime +'\n');
+    var dash = document.createTextNode("- ");
     var br = document.createElement("br");
     pre.appendChild(br);
-    pre.appendChild(titleContent);
-    pre.appendChild(dateContent);
+    pre.appendChild(dateNode);
+    pre.appendChild(br);
+    pre.appendChild(startTimeNode);
+    pre.appendChild(dash);
+    pre.appendChild(endTimeNode);
+    pre.appendChild(br);
+    pre.appendChild(dash);
+    pre.appendChild(br);
+    pre.appendChild(titleNode);
+    pre.appendChild(br);
 }
 function tomorrow(title, date){
     var pre = document.getElementById('tomOutput');
