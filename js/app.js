@@ -57,7 +57,6 @@ function listUpcomingEvents () {
 				if(!when){
 					when = event.start.date;
 				}
-                today(event.summary, startDate, startTime, endTime);
                 insertEventIntoTable(startDate, startTime, endTime, event.summary);
 
 			}
@@ -95,8 +94,7 @@ function insertEventIntoTable(date, startTime, endTime, title) {
     var dateNode = document.createTextNode(insertDate);
     var timeNode = document.createTextNode(insertTime);
     var titleNode = document.createTextNode(insertTitle);
-    table.innerHTML = insertDate;
-    table.innerHTML = insertTitle
+    table.innerHTML += "<tr><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td></tr>"
 
 
 
