@@ -94,8 +94,11 @@ function insertEventIntoTable(date, startTime, endTime, title) {
     var dateNode = document.createTextNode(insertDate);
     var timeNode = document.createTextNode(insertTime);
     var titleNode = document.createTextNode(insertTitle);
-    table.innerHTML += "<tr><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td></tr>"
-
+    if(date == new Date().toString('ddd MMMM/dd/yyyy')){
+        table.innerHTML += "<tr class =\"success\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td></tr>"
+    }
+    else{
+        table.innerHTML += "<tr class =\"info\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td></tr>"
 
 
 
@@ -114,4 +117,4 @@ function insertIntoTableRows(content){
     var row = document.createElement("td");
     row.innerHTML = content;
     return row;
-}}
+}}}
