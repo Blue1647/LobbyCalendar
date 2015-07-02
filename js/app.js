@@ -42,7 +42,6 @@ function listUpcomingEvents () {
 	});
 	request.execute(function (resp) {
 		var events = resp.items;
-		//today('Upcoming events:');
 
 		if (events.length > 0) {
 			for (var i = 0; i <events.length; i++) {
@@ -50,42 +49,17 @@ function listUpcomingEvents () {
 				var when = event.start.date;
                 var startDate = new Date(event.start.dateTime).toString('ddd MMMM/dd/yyyy');
                 var startTime = new Date(event.start.dateTime).toString('hh:mm tt');
-                var endDate = (new Date(event.end.dateTime).getDate());
                 var endTime = new Date(event.end.dateTime).toString('hh:mm tt');
                 var todayDate = new Date().getDate();
-                var tomDate = todayDate + 1;
+                console.log(startTime);
 				if(!when){
 					when = event.start.date;
 				}
                 insertEventIntoTable(startDate, startTime, endTime, event.summary);
-
 			}
 	};
 })
-function today(title, date, startTime, endTime) {
-    var pre = document.getElementById('todayOutput');
-    var titleNode = document.createTextNode(title + '\n');
-    var dateNode = document.createTextNode(date + '\n');
-    var startTimeNode = document.createTextNode(startTime +'\n');
-    var endTimeNode = document.createTextNode(endTime +'\n');
-    var dash = document.createTextNode("- ");
-    var dash2 = document.createTextNode("-");
-    var br = document.createElement("br");
-    pre.appendChild(br);
-    pre.appendChild(dateNode);
-    pre.appendChild(br);
-    pre.appendChild(startTimeNode);
-    pre.appendChild(br);
-    pre.appendChild(dash);
-    pre.appendChild(br);
-    pre.appendChild(endTimeNode);
-    pre.appendChild(br);
-    pre.appendChild(dash2);
-    pre.appendChild(br);
-    pre.appendChild(br);
-    pre.appendChild(titleNode);
-    pre.appendChild(br);
-}
+
 function insertEventIntoTable(date, startTime, endTime, title) {
     var table = document.getElementById('table-body');
     var insertDate = date;
@@ -99,22 +73,6 @@ function insertEventIntoTable(date, startTime, endTime, title) {
     }
     else{
         table.innerHTML += "<tr class =\"info\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td></tr>"
-
-
-
-
-    /*table.insertAdjacentHTML('beforeend', '<td>' + insertDate + '</td>');
-    table.insertAdjacentHTML('beforeend', '<td>' + insertTime + '</td>');
-    table.insertAdjacentHTML('beforeend', '<td>' + insertTitle + '</td>');*/
-
-
-    /*
-            <td id="column">Column content</td>
-            <td>Column content</td>
-            <td>Column content</td>*/
+    }
 }
-function insertIntoTableRows(content){
-    var row = document.createElement("td");
-    row.innerHTML = content;
-    return row;
-}}}
+}
