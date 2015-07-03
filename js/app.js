@@ -47,7 +47,7 @@ function checkAuth() {
                 for (var i = 0; i <events.length; i++) {
                     var event = events[i];
                     var when = event.start.date;
-                    var startDate = new Date(event.start.dateTime).toString('ddd MMMM/dd/yyyy');
+                    var startDate = new Date(event.start.dateTime).toString('ddd MM/dd/yyyy');
                     var startTime = new Date(event.start.dateTime).toString('hh:mm tt');
                     var endTime = new Date(event.end.dateTime).toString('hh:mm tt');
                     var todayDate = new Date().getDate();
@@ -55,7 +55,12 @@ function checkAuth() {
                     if(!when){
                         when = event.start.date;
                     }
-                    insertEventIntoTable(startDate, startTime, endTime, event.summary, location);
+                    if (!location){
+                        insertEventIntoTable(startDate, startTime, endTime, event.summary, "No specific room");
+                    }
+                    else{
+                        insertEventIntoTable(startDate, startTime, endTime, event.summary, location);
+                    }
                 }
         };
     })
@@ -76,7 +81,7 @@ function checkAuth() {
         else if (date != new Date().toString('ddd MMMM/dd/yyyy')){
             table.innerHTML += "<tr class =\"info\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td>"+"<td>"+insertLocation+"</td></tr>"
         }
-        else if (location == 'undefined'){
+        else if (location.toString() == 'undefined'){
             console.log("is this getting fired?");
             table.innerHTML += "<tr class =\"info\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td>"+"<td>No specific room</td></tr>"
         }
