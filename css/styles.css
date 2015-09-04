@@ -1,6 +1,12 @@
 .container {
-    padding-top: 20%;
+    padding-top: 5%;
     padding-bottom: 50%;
     position: relative;
     height: 14rem;
+}
+#time {
+    font-size: 8em;
+}
+#date {
+    font-size: 5em;
 }

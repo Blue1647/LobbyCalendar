@@ -4,7 +4,10 @@ $(document).ready(
     })
 
 function runFunction() {
-    var time = new Date().toString("dddd, MMMM d, yyyy h:mm:ss tt");
+    var date = new Date().toString("dddd, MMMM d, yyyy");
+    var time = new Date().toString("h:mm tt");
+    var dateField = document.getElementById('date');
     var timeField = document.getElementById('time');
+    dateField.innerHTML = date;
     timeField.innerHTML = time;
 };
