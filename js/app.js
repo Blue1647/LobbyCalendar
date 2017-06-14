@@ -1,92 +1,36 @@
-var CLIENT_ID = '739379389102-e2e5g2i4pjbc48icc9h98q2n9lcr33ai.apps.googleusercontent.com';
-var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
+var calendarUrl = "https://www.googleapis.com/calendar/v3/calendars/oifj0r6ik0s58t7vm457irf0lk@group.calendar.google.com/events?key=AIzaSyCG4-gSYXFsIp_R7p1e7yuzQ64xgTKwhcU&singleEvents=true&orderBy=startTime&maxResults=20&timeMin=" + new Date().toJSON();
 
-console.log("app.js loaded!");
-
-function checkAuth() {
-        gapi.auth.authorize(
-        {
-            'client_id': CLIENT_ID,
-            'scope': SCOPES,
-            'immediate': true
-
-        }, handleAuthResult);
+function listUpcomingEvents(events) {
+    if (events.length > 0) events.forEach(function(event){insertEventIntoTable(event)});   
+}
+function insertEventIntoTable(event) {
+    var table = document.getElementById('table-body');
+    var eventDate = new Date(event.start.dateTime).toString('ddd MM/dd/yyyy');
+    var startTime = new Date(event.start.dateTime).toString('hh:mm tt');
+    var endTime = new Date(event.end.dateTime).toString('hh:mm tt');
+    var timeSpan = startTime + " - " + endTime;
+    var eventTitle = event.summary;
+    var eventLocation = event.location || 'No specific room';
+    var dateNode = document.createTextNode(eventDate);
+    var timeNode = document.createTextNode(timeSpan);
+    var titleNode = document.createTextNode(eventTitle);
+    if (eventDate == new Date().toString('ddd MMMM/dd/yyyy')) {
+        table.innerHTML += "<tr class =\"success\"><td>" + eventDate + "</td>" + "<td>" + timeSpan + "</td>" + "<td>" + eventTitle + "</td>" + "<td>" + eventLocation + "</td></tr>"
     }
-    function handleAuthResult(authResult) {
-        var authorizeDiv = document.getElementById('authorize-div');
-        if (authResult && !authResult.error) {
-            authorizeDiv.style.display = 'none';
-            loadCalendarApi();
-        }
-        else {
-            authorizeDiv.style.display = 'inline';
-        }
+    else if (date != new Date().toString('ddd MMMM/dd/yyyy')) {
+        table.innerHTML += "<tr class =\"info\"><td>" + eventDate + "</td>" + "<td>" + timeSpan + "</td>" + "<td>" + eventTitle + "</td>" + "<td>" + eventLocation + "</td></tr>"
     }
-    function handleAuthClick(event) {
-        gapi.auth.authorize(
-        {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-        handleAuthResult);
-        return false;
-    }
-    function loadCalendarApi() {
-        gapi.client.load('calendar', 'v3', listUpcomingEvents);
-    }
-    function listUpcomingEvents () {
-        var request = gapi.client.calendar.events.list({
-            'calendarId': 'oifj0r6ik0s58t7vm457irf0lk@group.calendar.google.com',
-            'timeMin': (new Date()).toISOString(),
-            'showDeleted': false,
-            'singleEvents': true,
-            'maxResults': 10,
-            'orderBy': 'startTime'
-        });
-        request.execute(function (resp) {
-            var events = resp.items;
-
-            if (events.length > 0) {
-                for (var i = 0; i <events.length; i++) {
-                    var event = events[i];
-                    var when = event.start.date;
-                    var startDate = new Date(event.start.dateTime).toString('ddd MM/dd/yyyy');
-                    var startTime = new Date(event.start.dateTime).toString('hh:mm tt');
-                    var endTime = new Date(event.end.dateTime).toString('hh:mm tt');
-                    var todayDate = new Date().getDate();
-                    var location = event.location;
-                    if(!when){
-                        when = event.start.date;
-                    }
-                    if (!location){
-                        insertEventIntoTable(startDate, startTime, endTime, event.summary, "No specific room");
-                    }
-                    else{
-                        insertEventIntoTable(startDate, startTime, endTime, event.summary, location);
-                    }
-                }
-        };
-    })
-
-    function insertEventIntoTable(date, startTime, endTime, title, location) {
-        var table = document.getElementById('table-body');
-        var insertDate = date;
-        var insertTime = startTime + " - " + endTime;
-        var insertTitle = title;
-        var insertLocation = location;
-        var dateNode = document.createTextNode(insertDate);
-        var timeNode = document.createTextNode(insertTime);
-        var titleNode = document.createTextNode(insertTitle);
-        console.log(location);
-        if(date == new Date().toString('ddd MMMM/dd/yyyy')){
-            table.innerHTML += "<tr class =\"success\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td>"+"<td>"+insertLocation+"</td></tr>"
+}
+function getCalendarData() {
+    var httpReq = new XMLHttpRequest();
+    httpReq.onreadystatechange = function () {
+        if (httpReq.readyState === 4) {
+            if (httpReq.status === 200) {
+                var data = JSON.parse(httpReq.responseText);
+                listUpcomingEvents(data.items.slice(0, 10));
+            }
         }
-        else if (date != new Date().toString('ddd MMMM/dd/yyyy')){
-            table.innerHTML += "<tr class =\"info\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td>"+"<td>"+insertLocation+"</td></tr>"
-        }
-        else if (location.toString() == 'undefined'){
-            console.log("is this getting fired?");
-            table.innerHTML += "<tr class =\"info\"><td>" + insertDate + "</td>" + "<td>"+insertTime+"</td>"+"<td>"+insertTitle+"</td>"+"<td>No specific room</td></tr>"
-        }
-
-
-
-    }
+    };
+    httpReq.open('GET', calendarUrl);
+    httpReq.send();
 }
