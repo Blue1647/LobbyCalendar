@@ -1,7 +1,28 @@
 var calendarUrl = "https://www.googleapis.com/calendar/v3/calendars/oifj0r6ik0s58t7vm457irf0lk@group.calendar.google.com/events?key=AIzaSyCG4-gSYXFsIp_R7p1e7yuzQ64xgTKwhcU&singleEvents=true&orderBy=startTime&maxResults=20&timeMin=" + new Date().toJSON();
 
+window.onload = function(){
+    getCalendarData();
+}
+
+function getCalendarData() {
+    var httpReq = new XMLHttpRequest();
+    httpReq.onreadystatechange = function () {
+        if (httpReq.readyState === 4) {
+            if (httpReq.status === 200) {
+                var data = JSON.parse(httpReq.responseText);
+                listUpcomingEvents(data.items.slice(0, 10));
+            }
+        }
+    };
+    httpReq.open('GET', calendarUrl);
+    httpReq.send();
+}
 function listUpcomingEvents(events) {
-    if (events.length > 0) events.forEach(function(event){insertEventIntoTable(event)});   
+    if (events.length > 0) {
+        events.forEach(function (event) {
+            insertEventIntoTable(event)
+        });
+    }
 }
 function insertEventIntoTable(event) {
     var table = document.getElementById('table-body');
@@ -20,17 +41,4 @@ function insertEventIntoTable(event) {
     else if (date != new Date().toString('ddd MMMM/dd/yyyy')) {
         table.innerHTML += "<tr class =\"info\"><td>" + eventDate + "</td>" + "<td>" + timeSpan + "</td>" + "<td>" + eventTitle + "</td>" + "<td>" + eventLocation + "</td></tr>"
     }
-}
-function getCalendarData() {
-    var httpReq = new XMLHttpRequest();
-    httpReq.onreadystatechange = function () {
-        if (httpReq.readyState === 4) {
-            if (httpReq.status === 200) {
-                var data = JSON.parse(httpReq.responseText);
-                listUpcomingEvents(data.items.slice(0, 10));
-            }
-        }
-    };
-    httpReq.open('GET', calendarUrl);
-    httpReq.send();
 }
